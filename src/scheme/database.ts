@@ -1,10 +1,9 @@
 import { Sequelize, DataTypes } from 'sequelize';
-// import  from 'mariadb';
 
 const connection = {
-    host: '',
+    host: '.cafe24.com',
     user: '',
-    password: '',
+    password: '!',
     port: 3306,
     database: ''
 };
@@ -13,21 +12,17 @@ const connection = {
 export const sequelize = new Sequelize(connection.database, connection.user, connection.password, {
     host: connection.host,
     dialect: 'mysql',
-    //   dialectModule: require('mysql2'),
     dialectOptions: {
         multipleStatements: true,
-        typeCast:  (field: any, next: any) => {
-            if (field.type == 'VAR_STRING') {
-                console.log(field)
-                return field.string();
+        typeCast: (field: any, next: any) => {
+            if (field.type == 'VAR_STRING' && field.db === 'jinyoung4892') {
+                // console.log(field)
+                return field.buffer().toString('utf-8');
             }
             return next();
         },
-        charset: 'utf8mb4'
     }
 });
-
-// console.log(sequelize)
 
 // 모델 동기화 및 데이터베이스 연결
 (async () => {
